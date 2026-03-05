@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chidera Nwankwo · full‑stack cinematics</title>
+    <!-- Tailwind + custom layers -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- added phosphor icons for rare hacker glyphs -->
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+        * {
+            cursor: none;
+        }
+
+        /* custom cursor later — real hacker vibes */
+
+        body {
+            background: #0a0c0f;
+            font-family: 'Inter', sans-serif;
+            color: #e3e7f2;
+            overflow-x: hidden;
+        }
+
+        .hacker-cursor {
+            width: 12px;
+            height: 12px;
+            background: #00ffc2;
+            border-radius: 0;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.08s ease;
+            box-shadow: 0 0 20px #00ffc2;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+            transform: rotate(45deg);
+        }
+
+        .glitch-text {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0c0f;
+        }
+
+        .glitch-text::before {
+            color: #ff00d0;
+            z-index: -1;
+            transform: translate(-1.5px, -1px);
+            animation: glitch-1 1.2s infinite linear alternate-reverse;
+        }
+
+        .glitch-text::after {
+            color: #00f7ff;
+            z-index: -2;
+            transform: translate(1.5px, 1px);
+            animation: glitch-2 1.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-1 {
+            0% {
+                clip-path: inset(0 0 0 0);
+            }
+
+            80% {
+                clip-path: inset(5% 0 70% 0);
+            }
+
+            100% {
+                clip-path: inset(40% 0 20% 0);
+            }
+        }
+
+        @keyframes glitch-2 {
+            0% {
+                clip-path: inset(50% 0 30% 0);
+            }
+
+            60% {
+                clip-path: inset(10% 0 60% 0);
+            }
+
+            100% {
+                clip-path: inset(20% 0 50% 0);
+            }
+        }
+
+        /* rare grid + scanlines */
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: repeating-linear-gradient(0deg, rgba(0, 255, 194, 0.02) 0px, rgba(0, 0, 0, 0.4) 2px, transparent 3px);
+            pointer-events: none;
+            z-index: 100;
+            mix-blend-mode: overlay;
+            animation: scan 8s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 0 20px;
+            }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 194, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 194, 0.08) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* neon glow rings */
+        .neon-card {
+            position: relative;
+            background: rgba(12, 18, 28, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 255, 194, 0.25);
+            box-shadow: 0 0 20px rgba(0, 255, 194, 0.2), inset 0 0 10px rgba(0, 255, 194, 0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .neon-card:hover {
+            border-color: #00ffc2;
+            box-shadow: 0 0 35px #00ffc2, 0 0 60px #00a3ff, inset 0 0 15px #00ffc2;
+            transform: scale(1.02) translateY(-4px);
+        }
+
+        /* blinking led tags */
+        .led {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 0;
+            background: #00ffc2;
+            box-shadow: 0 0 15px #00ffc2;
+            margin-right: 6px;
+            animation: pulse-led 1.2s infinite;
+        }
+
+        @keyframes pulse-led {
+            0% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        .rare-badge {
+            background: #000c1a;
+            border-left: 3px solid #ff00d0;
+            padding: 0.2rem 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            box-shadow: -5px 0 15px #ff00d040;
+        }
+
+        /* glitchy avatar style */
+        .glitch-avatar {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            background: #111a22;
+            border: 2px solid #00ffc2;
+            box-shadow: 0 0 40px #00ffc2;
+            overflow: hidden;
+        }
+
+        .glitch-avatar::after {
+            content: "Chidera";
+            font-family: 'JetBrains Mono';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: #00ffc2;
+            color: black;
+            font-size: 0.8rem;
+            width: 100%;
+            text-align: center;
+            mix-blend-mode: multiply;
+            padding: 2px 0;
+            animation: glitchAvatarPulse 2s ease-in-out infinite;
+            transform-origin: center;
+            letter-spacing: 1px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-top: 1px solid rgba(255, 0, 208, 0.5);
+        }
+
+        @keyframes glitchAvatarPulse {
+            0% {
+                transform: scale(1);
+                background: #00ffc2;
+                color: black;
+                box-shadow: 0 0 5px #00ffc2;
+            }
+
+            25% {
+                transform: scale(1.05);
+                background: #ff00d0;
+                color: white;
+                box-shadow: 0 0 15px #ff00d0;
+            }
+
+            50% {
+                transform: scale(0.95);
+                background: #00ffff;
+                color: black;
+                box-shadow: 0 0 20px #00ffff;
+            }
+
+            75% {
+                transform: scale(1.02);
+                background: #ffaa00;
+                color: black;
+                box-shadow: 0 0 15px #ffaa00;
+            }
+
+            100% {
+                transform: scale(1);
+                background: #00ffc2;
+                color: black;
+                box-shadow: 0 0 5px #00ffc2;
+            }
+        }
+
+        /* Add a glitch effect on hover */
+        .glitch-avatar:hover::after {
+            animation: glitchAvatarGlitch 0.3s infinite;
+        }
+
+        @keyframes glitchAvatarGlitch {
+            0% {
+                transform: scale(1) translate(0);
+                background: #ff00d0;
+            }
+
+            20% {
+                transform: scale(1.1) translate(-2px, 0);
+                background: #00ffc2;
+            }
+
+            40% {
+                transform: scale(0.9) translate(2px, -1px);
+                background: #ff00d0;
+            }
+
+            60% {
+                transform: scale(1.05) translate(-1px, 1px);
+                background: #00ffff;
+            }
+
+            80% {
+                transform: scale(0.95) translate(1px, -1px);
+                background: #ffaa00;
+            }
+
+            100% {
+                transform: scale(1) translate(0);
+                background: #ff00d0;
+            }
+        }
+
+        /* staggered reveal */
+        .fade-stagger>* {
+            opacity: 0;
+            animation: fadeUp 0.5s ease-out forwards;
+        }
+
+        .fade-stagger>*:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .fade-stagger>*:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .fade-stagger>*:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .fade-stagger>*:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .fade-stagger>*:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .fade-stagger>*:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .fade-stagger>*:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: #050708;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ffc2;
+            box-shadow: inset 0 0 10px #00ffc2;
+        }
+    </style>
+</head>
+
+<body class="relative antialiased">
+
+    <!-- custom hacker cursor (triangle) -->
+    <div class="hacker-cursor" id="cursor"></div>
+
+    <!-- atmospheric layers -->
+    <div class="scan-line"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- main container with max-width cinematic padding -->
+    <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-10 py-8">
+
+        <!-- floating header with glitch name + rare badge -->
+        <div class="flex flex-wrap justify-between items-center mb-12 fade-stagger">
+            <div class="flex items-center space-x-3">
+                <span class="led"></span>
+                <h1 class="text-4xl md:text-5xl font-bold glitch-text font-mono" data-text="CHIDERA N.">CHIDERA N.</h1>
+                <div class="rare-badge ml-4 hidden sm:block">root@d3v:~/cv</div>
+            </div>
+            <div class="flex gap-4 text-neon font-mono text-sm">
+                <span
+                    class="border border-[#00ffc2] px-3 py-1 tracking-widest bg-black/50 shadow-[0_0_10px_#00ffc2]">+234-907-060-8423</span>
+                <span
+                    class="border border-[#ff00d0] px-3 py-1 shadow-[0_0_10px_#ff00d0] hidden lg:block">nwankwochidera.david@gmail.com</span>
+            </div>
+        </div>
+
+        <!-- profile + summary grid with huge animation -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-16">
+            <!-- left avatar column -->
+            <div class="lg:col-span-1 fade-stagger">
+                <div class="neon-card p-5 flex flex-col items-center justify-center group">
+                    <div
+                        class="glitch-avatar w-36 h-36 rounded-none flex items-center justify-center text-7xl font-bold text-[#00ffc2] bg-black/50">
+                        <img src="Me.png" />
+                    </div>
+                    <div class="mt-4 w-full text-center">
+                        <p class="font-mono text-xs text-[#00ffc2]">▲ ~~~~ █ ⚡ 29.May.2003</p>
+                        <p class="text-gray-400 mt-2 flex items-center justify-center"><i
+                                class="ph ph-map-pin text-[#ff00d0] mr-1"></i> Asokoro, Abuja</p>
+                        <div class="flex justify-center gap-2 mt-4 text-2xl">
+                            <i class="ph ph-github-logo hover:text-[#00ffc2] transition-all"></i>
+                            <i class="ph ph-linkedin-logo hover:text-[#00ffc2] transition-all"></i>
+                            <i class="ph ph-globe hover:text-[#00ffc2] transition-all"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- summary / core skills -->
+            <div class="lg:col-span-3 fade-stagger">
+                <div class="neon-card p-8 h-full flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 text-xs font-mono text-[#ff00d0] mb-3"><span
+                                class="led"></span> // PROFESSIONAL_SUMMARY</div>
+                        <p class="text-lg leading-relaxed text-gray-200">Full Stack Developer with <span
+                                class="text-[#00ffc2] font-bold">4+ years</span> building web & mobile apps using <span
+                                class="bg-black/60 px-2 py-0.5 border border-[#00ffc2]/50">React</span>, <span
+                                class="bg-black/60 px-2 py-0.5 border border-[#ff00d0]/50">Node.js</span>, Laravel,
+                            React Native. Skilled in RESTful/GraphQL APIs, database management (MongoDB, MySQL,
+                            PostgreSQL), AI integration, and full project deployment.</p>
+                    </div>
+                    <div class="mt-8 flex flex-wrap gap-2 font-mono text-xs">
+                        <span class="rare-badge">React/Next</span><span class="rare-badge">Node/Express</span><span
+                            class="rare-badge">Laravel</span><span class="rare-badge">Python/Flask</span><span
+                            class="rare-badge">MongoDB</span><span class="rare-badge">PostgreSQL</span><span
+                            class="rare-badge">TypeScript</span><span class="rare-badge">AI integration</span><span
+                            class="rare-badge">WordPress</span><span class="rare-badge">JWT/OAuth</span><span
+                            class="rare-badge">Vercel/cPanel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- education + certifications row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 fade-stagger">
+            <!-- edu -->
+            <div class="neon-card p-5">
+                <div class="flex items-center gap-2 text-[#ff00d0] font-mono text-xs mb-3"><span class="led"></span> //
+                    EDUCATION</div>
+                <h3 class="text-xl font-bold">Ekiti State University</h3>
+                <p class="text-gray-400 font-mono text-sm">B.Sc. Chemistry | CGPA 3.6/5 <span
+                        class="text-[#00ffc2]">[2024]</span></p>
+                <p class="mt-2 text-xs border-t border-[#00ffc2]/30 pt-2 italic">"quantum → code"</p>
+            </div>
+            <!-- certs -->
+            <div class="neon-card p-5">
+                <div class="flex items-center gap-2 text-[#ff00d0] font-mono text-xs mb-3"><span class="led"></span> //
+                    CERTIFICATIONS</div>
+                <ul class="space-y-1 font-mono text-sm">
+                    <li>◉ PGD IT - ICSMP | 2025</li>
+                    <li>◉ PGD Cyber Security - ICSMP | 2025</li>
+                    <li>◉ National Youth Service Corps | 2025</li>
+                </ul>
+            </div>
+            <!-- add interests/bday etc -->
+            <div class="neon-card p-5">
+                <div class="flex items-center gap-2 text-[#ff00d0] font-mono text-xs mb-3"><span class="led"></span> //
+                    ADDITIONAL</div>
+                <p><span class="text-[#00ffc2]">></span> Languages: English (Fluent), Igbo (comprehension)</p>
+                <p><span class="text-[#00ffc2]">></span> DoB: 29 May 2003 · Single</p>
+                <p><span class="text-[#00ffc2]">></span> Interests: AI, software architecture, tech innovation</p>
+            </div>
+        </div>
+
+        <!-- PROFESSIONAL EXPERIENCE (instructor + freelance) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 fade-stagger">
+            <div class="neon-card p-6">
+                <div class="flex items-center gap-2 text-[#ff00d0] font-mono text-xs mb-4"><span class="led"></span> //
+                    FULL STACK INSTRUCTOR @ DCH ACADEMY</div>
+                <p class="text-sm text-[#00ffc2] font-mono">2025 – 2026 | Karu, Abuja</p>
+                <ul class="mt-4 space-y-2 text-gray-300">
+                    <li>→ Trained 50+ students in Full Stack (React, PHP, MySQL)</li>
+                    <li>→ designed structured curriculum (frontend → backend → deployment)</li>
+                    <li>→ mentored real‑world portfolio projects</li>
+                </ul>
+                <div class="mt-4 h-1 w-20 bg-[#00ffc2] shadow-[0_0_15px_#00ffc2]"></div>
+            </div>
+            <div class="neon-card p-6">
+                <div class="flex items-center gap-2 text-[#ff00d0] font-mono text-xs mb-4"><span class="led"></span> //
+                    FREELANCE FULL STACK (SELF-EMPLOYED)</div>
+                <p class="text-sm text-[#00ffc2] font-mono">2019 – Present · remote / Abuja</p>
+                <ul class="mt-4 space-y-2 text-gray-300">
+                    <li>→ MERN, LAMP, scalable backends (Node.js, Laravel)</li>
+                    <li>→ REST/GraphQL, auth (JWT, OAuth), DB operations</li>
+                    <li>→ Deployed to Vercel, Netlify, cPanel · WordPress solutions</li>
+                    <li>→ GitHub collaborative workflows</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- TECH PROJECTS : rare cards with lots of animations -->
+        <div class="mb-16">
+            <h2 class="text-3xl font-mono mb-6 flex items-center"><span class="led mr-3"></span> // ACTIVE_MICROSERVICES
+                & PLATFORMS</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 fade-stagger">
+                <!-- AI Chatbot -->
+                <div class="neon-card p-6 group hover:bg-[#00ffc2]/5 transition-all duration-700">
+                    <i class="ph ph-robot text-3xl text-[#ff00d0] mb-3"></i>
+                    <h3 class="text-xl font-bold font-mono">AI ChatBot <span
+                            class="text-xs bg-black px-2 ml-2">Python/Flask</span></h3>
+                    <p class="text-sm text-gray-400 mt-2">Backend microservice, OpenAI API integration, dynamic prompt
+                        handling, deployed for real-time inference.</p>
+                    <div class="mt-3 text-[#00ffc2] font-mono text-xs">▲ flask + openAI · vercel</div>
+                </div>
+                <!-- CRM Platform -->
+                <div class="neon-card p-6 group hover:bg-[#ff00d0]/5 transition-all duration-700">
+                    <i class="ph ph-address-book text-3xl text-[#00ffc2] mb-3"></i>
+                    <h3 class="text-xl font-bold font-mono">CRM Platform <span
+                            class="text-xs bg-black px-2 ml-2">TS/Postgres</span></h3>
+                    <p class="text-sm text-gray-400 mt-2">JWT auth, role‑based access, RESTful customer management,
+                        deployed on live server.</p>
+                    <div class="mt-3 text-[#ff00d0] font-mono text-xs">▌ typeORM · SQLite/Postgres</div>
+                </div>
+                <!-- HRM system -->
+                <div class="neon-card p-6 group hover:bg-[#00ffc2]/5 transition-all duration-700">
+                    <i class="ph ph-users-three text-3xl text-[#ffb86c] mb-3"></i>
+                    <h3 class="text-xl font-bold font-mono">HRM System <span
+                            class="text-xs bg-black px-2 ml-2">Full‑stack</span></h3>
+                    <p class="text-sm text-gray-400 mt-2">Employee management, attendance, payroll, responsive UI &
+                        reporting backend.</p>
+                    <div class="mt-3 text-[#00ffc2] font-mono text-xs">▸ React · Node · PostgreSQL</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- core skills reappear as moving tag cloud + refs -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="neon-card p-6 flex flex-wrap gap-2 justify-center border-dashed border-[#ff00d0]">
+                <!-- floating tags with blink -->
+                <span class="px-3 py-1 bg-black/60 border border-[#00ffc2] animate-pulse">#React.js</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#ff00d0] animate-pulse delay-100">#Next.js</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#00ffc2] animate-pulse delay-200">#Node.js</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#ff00d0] animate-pulse delay-300">#Laravel</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#00ffc2] animate-pulse delay-500">#Python</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#ff00d0] animate-pulse delay-75">#ReactNative</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#00ffc2] animate-pulse">#MongoDB</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#ff00d0] animate-pulse">#MySQL</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#00ffc2] animate-pulse">#PostgreSQL</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#ff00d0] animate-pulse">#GraphQL</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#00ffc2] animate-pulse">#Git</span>
+                <span class="px-3 py-1 bg-black/60 border border-[#ff00d0] animate-pulse">#Docker</span>
+            </div>
+            <div class="neon-card p-6 text-right font-mono">
+                <p class="text-sm text-gray-400">REFEREES</p>
+                <p class="text-2xl text-[#00ffc2] font-bold glitch-text" data-text="available upon request">available
+                    upon request</p>
+                <p class="text-xs mt-4 tracking-[0.2em]">// integrity_hash: 7E4D3A1F9C</p>
+                <div class="h-1 w-full bg-gradient-to-r from-[#ff00d0] to-[#00ffc2] mt-3"></div>
+                <p class="mt-2 text-xs"><i class="ph ph-envelope text-[#ff00d0]"></i> nwankwochidera.david@gmail.com |
+                    www.bvtechlab.vercel.app</p>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div class="mt-16 text-center text-xs text-gray-600 font-mono border-t border-[#00ffc2]/30 pt-6">
+            <span class="text-[#00ffc2]">$</span> chmod +x cv — designed with ███ kinematic neon noir · last commit:
+            2026
+        </div>
+    </div>
+
+    <!-- JS for custom cursor + additional glitch randomness -->
+    <script>
+        (function () {
+            // triangle cursor follower
+            const cursor = document.getElementById('cursor');
+            if (cursor) {
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                });
+                document.addEventListener('mouseleave', () => {
+                    cursor.style.opacity = '0';
+                });
+                document.addEventListener('mouseenter', () => {
+                    cursor.style.opacity = '1';
+                });
+            }
+
+            // randomize glitch effect on all glitch-text (pseudo-anarchy)
+            const glitchEls = document.querySelectorAll('.glitch-text');
+            glitchEls.forEach(el => {
+                el.setAttribute('data-text', el.innerText);
+                setInterval(() => {
+                    if (Math.random() > 0.95) {
+                        el.style.transform = `skew(${Math.random() * 5 - 2.5}deg)`;
+                        setTimeout(() => el.style.transform = '', 100);
+                    }
+                }, 300);
+            });
+
+        })();
+    </script>
+    <style>
+        a,
+        button,
+        [role=button],
+        h1,
+        h2,
+        h3,
+        p {
+            cursor: none;
+        }
+
+        .neon-card {
+            transition: box-shadow 0.3s, transform 0.3s, border-color 0.2s;
+        }
+
+        .rare-badge {
+            background: #0e121c;
+            border-left: 3px solid #ff00d0;
+        }
+
+        .ph {
+            font-size: 1.4rem;
+        }
+    </style>
+</body>
+
+</html>
