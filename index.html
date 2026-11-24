@@ -476,22 +476,27 @@
             transform: scale(1.12) translateZ(30px);
         }
 
+        /* centre piece: a lit, glossy portrait disc with an ember rim */
         .core {
             position: absolute;
-            left: -90px;
-            top: -90px;
-            width: 180px;
-            height: 180px;
+            left: -100px;
+            top: -100px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 30%, #ffe2b8 0%, #ff8a4c 28%, #e4572e 55%, #3a0f05 100%);
-            box-shadow: 0 0 80px 10px rgba(255, 107, 53, 0.45), inset -18px -22px 40px rgba(0, 0, 0, 0.5);
-            display: grid;
-            place-items: center;
-            font-family: var(--mono);
-            font-size: 12px;
-            color: #fff;
-            letter-spacing: 0.1em;
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+            padding: 6px;
+            background: conic-gradient(from 200deg, #ffd9a8, #ff6b35, #3a0f05, #ffb347, #ffd9a8);
+            box-shadow: 0 0 90px 12px rgba(255, 107, 53, 0.45), 0 30px 40px -10px rgba(0, 0, 0, 0.8);
+        }
+
+        .core::before {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: url("assets/me/hoodie.jpeg") 50% 22% / cover no-repeat, #1a1a20;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15), inset -20px -26px 40px rgba(0, 0, 0, 0.45);
         }
 
         .orbit-ring {
@@ -500,6 +505,7 @@
             top: -250px;
             width: 500px;
             height: 500px;
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.12);
             border-radius: 50%;
             border: 1px solid var(--rule);
             transform: rotateX(90deg);
@@ -1204,7 +1210,7 @@
                 <h1>Chidera<br><em>Nwankwo</em></h1>
                 <p class="hero-sub">
                     Building <strong>web and mobile products</strong> end-to-end for 4+ years.
-                    I work across the full stack — React, Node.js, Laravel, React Native —
+                    I work across the full stack — React, Node.js, Laravel, Flutter, React Native, AWS —
                     and ship things that are reliable, well-structured, and actually work in production.
                 </p>
                 <div class="hero-actions">
@@ -1229,18 +1235,20 @@
                 <div class="ring-wrap" id="ringWrap">
                     <div class="ring">
                         <div class="orbit-ring"></div>
-                        <div class="core">FULL&nbsp;STACK</div>
+                        <div class="core" role="img" aria-label="Chidera Nwankwo"></div>
 
                         <div class="ring-item" style="--a:0deg"><div class="plate"><img src="assets/logos/react.svg" alt="React"></div></div>
-                        <div class="ring-item" style="--a:36deg"><div class="plate"><img src="assets/logos/nextdotjs.svg" alt="Next.js"></div></div>
-                        <div class="ring-item" style="--a:72deg"><div class="plate"><img src="assets/logos/typescript.svg" alt="TypeScript"></div></div>
-                        <div class="ring-item" style="--a:108deg"><div class="plate"><img src="assets/logos/nodedotjs.svg" alt="Node.js"></div></div>
-                        <div class="ring-item" style="--a:144deg"><div class="plate"><img src="assets/logos/laravel.svg" alt="Laravel"></div></div>
-                        <div class="ring-item" style="--a:180deg"><div class="plate"><img src="assets/logos/mongodb.svg" alt="MongoDB"></div></div>
-                        <div class="ring-item" style="--a:216deg"><div class="plate"><img src="assets/logos/postgresql.svg" alt="PostgreSQL"></div></div>
-                        <div class="ring-item" style="--a:252deg"><div class="plate"><img src="assets/logos/docker.svg" alt="Docker"></div></div>
-                        <div class="ring-item" style="--a:288deg"><div class="plate"><img src="assets/logos/tailwindcss.svg" alt="Tailwind CSS"></div></div>
-                        <div class="ring-item" style="--a:324deg"><div class="plate"><img src="assets/logos/python.svg" alt="Python"></div></div>
+                        <div class="ring-item" style="--a:30deg"><div class="plate"><img src="assets/logos/nextdotjs.svg" alt="Next.js"></div></div>
+                        <div class="ring-item" style="--a:60deg"><div class="plate"><img src="assets/logos/typescript.svg" alt="TypeScript"></div></div>
+                        <div class="ring-item" style="--a:90deg"><div class="plate"><img src="assets/logos/nodedotjs.svg" alt="Node.js"></div></div>
+                        <div class="ring-item" style="--a:120deg"><div class="plate"><img src="assets/logos/laravel.svg" alt="Laravel"></div></div>
+                        <div class="ring-item" style="--a:150deg"><div class="plate"><img src="assets/logos/mongodb.svg" alt="MongoDB"></div></div>
+                        <div class="ring-item" style="--a:180deg"><div class="plate"><img src="assets/logos/postgresql.svg" alt="PostgreSQL"></div></div>
+                        <div class="ring-item" style="--a:210deg"><div class="plate"><img src="assets/logos/docker.svg" alt="Docker"></div></div>
+                        <div class="ring-item" style="--a:240deg"><div class="plate"><img src="assets/logos/tailwindcss.svg" alt="Tailwind CSS"></div></div>
+                        <div class="ring-item" style="--a:270deg"><div class="plate"><img src="assets/logos/flutter.svg" alt="Flutter"></div></div>
+                        <div class="ring-item" style="--a:300deg"><div class="plate"><img src="assets/logos/amazonaws.svg" alt="AWS"></div></div>
+                        <div class="ring-item" style="--a:330deg"><div class="plate"><img src="assets/logos/python.svg" alt="Python"></div></div>
                     </div>
                 </div>
                 <p class="stage-caption">Drag to rotate · hover to pause</p>
@@ -1263,6 +1271,8 @@
                         <figure class="logo-tile tilt-sm"><img src="assets/logos/typescript.svg" alt=""><span>TypeScript</span></figure>
                         <figure class="logo-tile tilt-sm text-only"><span>HTML / CSS</span></figure>
                         <figure class="logo-tile tilt-sm"><img src="assets/logos/tailwindcss.svg" alt=""><span>Tailwind CSS</span></figure>
+                        <figure class="logo-tile tilt-sm"><img src="assets/logos/flutter.svg" alt=""><span>Flutter</span></figure>
+                        <figure class="logo-tile tilt-sm"><img src="assets/logos/vite.svg" alt=""><span>Vite</span></figure>
                     </div>
                 </div>
                 <div class="reveal" data-delay="2">
@@ -1284,6 +1294,8 @@
                         <figure class="logo-tile tilt-sm"><img src="assets/logos/mysql.svg" alt=""><span>MySQL</span></figure>
                         <figure class="logo-tile tilt-sm"><img src="assets/logos/sqlite.svg" alt=""><span>SQLite</span></figure>
                         <figure class="logo-tile tilt-sm text-only"><span>TypeORM</span></figure>
+                        <figure class="logo-tile tilt-sm"><img src="assets/logos/amazonaws.svg" alt=""><span>AWS</span></figure>
+                        <figure class="logo-tile tilt-sm"><img src="assets/logos/redis.svg" alt=""><span>Redis</span></figure>
                         <figure class="logo-tile tilt-sm"><img src="assets/logos/vercel.svg" alt=""><span>Vercel</span></figure>
                         <figure class="logo-tile tilt-sm"><img src="assets/logos/netlify.svg" alt=""><span>Netlify</span></figure>
                         <figure class="logo-tile tilt-sm text-only"><span>cPanel</span></figure>
@@ -1360,6 +1372,39 @@
                 <div class="section-rule"></div>
             </div>
             <div class="projects-grid">
+
+                <!-- 06 DERA CRM (frontend + backend) -->
+                <div class="tilt reveal" data-delay="1">
+                    <article class="project-card">
+                        <div class="project-media" style="background: radial-gradient(circle at 25% 20%, #1d2440 0%, #0b0b0e 70%);">
+                            <div style="position:absolute;inset:0;display:grid;place-items:center;">
+                                <div style="font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:#b9c6ff;opacity:.85;text-transform:uppercase;">Pipeline · Deals · Activity</div>
+                            </div>
+                        </div>
+                        <div class="brand-badge monogram" style="color:#d6dcff;background:radial-gradient(circle at 30% 25%, #6a7cff, #232b5c 70%);">DERA</div>
+                        <div class="project-body">
+                            <p class="project-num">06 — Sales CRM · Frontend + Backend</p>
+                            <h3 class="project-name">DERA CRM</h3>
+                            <p class="project-desc">
+                                Full-stack CRM for sales teams. The React dashboard covers contacts, deal pipelines,
+                                activities, tickets, campaigns and analytics. The Express API uses Sequelize over
+                                PostgreSQL, with Redis-backed queues, rate limiting and an audit log.
+                            </p>
+                            <div class="project-stack">
+                                <span class="stack-pill"><img src="assets/logos/react.svg" alt="">React 19</span>
+                                <span class="stack-pill"><img src="assets/logos/vite.svg" alt="">Vite</span>
+                                <span class="stack-pill"><img src="assets/logos/tailwindcss.svg" alt="">Tailwind 4</span>
+                                <span class="stack-pill"><img src="assets/logos/nodedotjs.svg" alt="">Express</span>
+                                <span class="stack-pill"><img src="assets/logos/postgresql.svg" alt="">PostgreSQL</span>
+                                <span class="stack-pill"><img src="assets/logos/redis.svg" alt="">Redis</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/CoderWithCuriosity/DERA-CRM-Frontend" target="_blank" rel="noopener" class="project-link">Frontend →</a>
+                                <a href="https://github.com/CoderWithCuriosity/DERA-CRM-Backend" target="_blank" rel="noopener" class="project-link">Backend →</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
 
                 <!-- 04 Blissful Rose Petals -->
                 <div class="tilt reveal" data-delay="1">
